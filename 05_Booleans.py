@@ -5,3 +5,5 @@ print(type(is_single))
 
 # Invertir valor de la variable boolean
 print(not is_single)
+
+print(True and False)
