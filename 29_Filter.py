@@ -24,4 +24,5 @@ persons = [
 ]
 
 new_persons = list(filter(lambda x : x["age"] > 30, persons))
+print(persons)
 print(new_persons)
