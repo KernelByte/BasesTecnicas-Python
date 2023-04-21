@@ -1,4 +1,4 @@
-foot = ["chiken","Apple","rice"]
+foot = ["chiken","Apple","rice","Otro"]
 number = ["1","2","3"]
 
 # El map permite la conversion de datos haciendo uso de funciones
