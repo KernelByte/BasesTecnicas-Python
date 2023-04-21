@@ -20,5 +20,5 @@ def read_csv(path):
 
 # correr archivo como script desde la terminal
 if __name__ == '__main__':
-  data = read_csv('./app/data.csv')
+  data = read_csv('./world_population.csv')
   print(data)
