@@ -1,0 +1,5 @@
+services:
+  app-csv:
+    build:
+    context: .
+    dockerfile: app_DataSet/Dockerfile
