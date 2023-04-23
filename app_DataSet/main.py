@@ -19,7 +19,7 @@ def run():
 
   data = read_csv.read_csv('world_population.csv')
   country = input('Type Country => ')
-  print(country)
+  #print(country)
 
   result = utils.population_by_country(data, country)
 
