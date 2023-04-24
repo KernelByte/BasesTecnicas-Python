@@ -1,12 +1,13 @@
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 app.title = "My movie app"
 app.version = 1.0
 
-@app.get("/",tags=["Home url"])
+@app.get("/",tags=["Home url"],response_class=HTMLResponse)
 def get_message():
-    return "Hello world"
+    return "<h1>Hello world</h1>"
 
 
 @app.get("/person",tags=["Person url"])
