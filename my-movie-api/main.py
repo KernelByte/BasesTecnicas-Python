@@ -68,3 +68,20 @@ def create_movie(id: int = Body(),name: str = Body(),category: str = Body()):
         "category": category
      })
      return movies
+
+# Metodo PUT
+@app.put("/movies/{id}", tags=["movies"])
+def update_movies(id: int, name: str = Body(),category: str = Body()):
+     for item in movies:
+          if item["id"] == id:
+               item["name"] = name
+               item["category"] = category
+     return movies
+
+# Metodo DELETE
+@app.delete("/movies/{id}", tags=["movies"])
+def delete_movie(id: int):
+     for item in movies:
+          if item["id"] == id:
+               movies.remove(item)
+     return movies
