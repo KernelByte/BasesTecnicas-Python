@@ -42,9 +42,19 @@ movies = [
         "id" : 3,
         "name": "Superman",
         "category": "Super hero"
+    },
+    {
+        "id" : 4,
+        "name": "JonWhit",
+        "category": "Action"
     }
 ]
 
-@app.get("/movies/{id}")
+@app.get("/movies/{id}",tags=["movies"])
 def get_movies(id: int):
      return list(filter(lambda movie : movie["id"] == id, movies))
+
+
+@app.get("/movies/",tags=["movies"])
+def get_movies_by_category(categories: str):
+     return list(filter(lambda movie : movie["category"] == categories, movies))
