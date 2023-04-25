@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Body
 from fastapi.responses import HTMLResponse
+import Esquemas
 
 app = FastAPI()
 app.title = "My movie app"
@@ -61,21 +62,17 @@ def get_movies_by_category(categories: str):
 
 # Metodo POST
 @app.post("/movies",tags=["movies"])
-def create_movie(id: int = Body(),name: str = Body(),category: str = Body()):
-     movies.append({
-        "id" : id,
-        "name": name,
-        "category": category
-     })
+def create_movie(movie : Esquemas.Movie):
+     movies.append(movie)
      return movies
 
 # Metodo PUT
 @app.put("/movies/{id}", tags=["movies"])
-def update_movies(id: int, name: str = Body(),category: str = Body()):
+def update_movies(id: int, movie : Esquemas.Movie):
      for item in movies:
           if item["id"] == id:
-               item["name"] = name
-               item["category"] = category
+               item["name"] = movie.name
+               item["category"] = movie.category
      return movies
 
 # Metodo DELETE
