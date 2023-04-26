@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 
 class Movie(BaseModel):
     id: int | None = None
-    name: str = Field(default="Ingresa nombre", max_length=200)
+    name: str = Field(default="Ingresa nombre", max_length=2000)
     category: str = Field(default="Ingresa la categoria")
 
     class Config:

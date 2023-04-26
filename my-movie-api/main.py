@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Body, Path, Query
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 import Esquemas
 
 app = FastAPI()
@@ -51,6 +51,10 @@ movies = [
     }
 ]
 
+@app.get("/movies",status_code=200)
+def find_all_movies():
+    return JSONResponse(status_code=200, content=movies)
+
 @app.get("/movies/{id}",tags=["movies"])
 def get_movies(id: int = Path(ge=1, le=200)):
      return list(filter(lambda movie : movie["id"] == id, movies))
@@ -61,7 +65,7 @@ def get_movies_by_category(categories: str = Query(min_length=5)):
      return list(filter(lambda movie : movie["category"] == categories, movies))
 
 # Metodo POST
-@app.post("/movies",tags=["movies"])
+@app.post("/movies",tags=["movies"], status_code=201)
 def create_movie(movie : Esquemas.Movie):
      movies.append(movie)
      return movies
@@ -73,7 +77,7 @@ def update_movies(id: int, movie : Esquemas.Movie):
           if item["id"] == id:
                item["name"] = movie.name
                item["category"] = movie.category
-     return movies
+     return JSONResponse(content={"message": "Se a modificado la pelicula"})
 
 # Metodo DELETE
 @app.delete("/movies/{id}", tags=["movies"])
