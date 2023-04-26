@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Path, Query
 from fastapi.responses import HTMLResponse
 import Esquemas
 
@@ -52,12 +52,12 @@ movies = [
 ]
 
 @app.get("/movies/{id}",tags=["movies"])
-def get_movies(id: int):
+def get_movies(id: int = Path(ge=1, le=200)):
      return list(filter(lambda movie : movie["id"] == id, movies))
 
 
 @app.get("/movies/",tags=["movies"])
-def get_movies_by_category(categories: str):
+def get_movies_by_category(categories: str = Query(min_length=5)):
      return list(filter(lambda movie : movie["category"] == categories, movies))
 
 # Metodo POST
