@@ -3,10 +3,15 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.security import HTTPBearer
 import Esquemas
 from jwt_manager import create_token, validate_token
+from config.database import Session, engine, Base
+from models.movie import Movie
 
 app = FastAPI()
 app.title = "My movie app"
 app.version = 1.0
+
+# Creacion y conexion base de datos
+Base.metadata.create_all(bind=engine)
 
 class JWTBearer(HTTPBearer):
      async def __call__(self, request: Request):
