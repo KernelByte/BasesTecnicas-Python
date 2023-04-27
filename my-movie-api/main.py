@@ -91,4 +91,9 @@ def delete_movie(id: int):
 
 @app.post("/login", tags=["Login"])
 def login(user: Esquemas.User):
+     
+     if user.email == "admin@gmail.com" and user.password == "12345":
+          token:str = create_token(user.dict())
+     return JSONResponse(status_code=200,content=token)
+
      return user
