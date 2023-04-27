@@ -1,12 +1,19 @@
-from fastapi import FastAPI, Body, Path, Query
+from fastapi import FastAPI, Body, Path, Query, Request, HTTPException, Depends
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.security import HTTPBearer
 import Esquemas
-from jwt_manager import create_token
+from jwt_manager import create_token, validate_token
 
 app = FastAPI()
 app.title = "My movie app"
 app.version = 1.0
 
+class JWTBearer(HTTPBearer):
+     async def __call__(self, request: Request):
+          respuesta = await super().__call__(request)
+          data = validate_token(respuesta.credentials)
+          if data["email"] != "admin@gmail.com":
+            raise HTTPException(status_code=403, detail="Las credenciales son invalidas")
 
 @app.get("/", tags=["Home url"], response_class=HTMLResponse)
 def get_message():
@@ -52,11 +59,11 @@ movies = [
     }
 ]
 
-@app.get("/movies",status_code=200)
+@app.get("/movies",status_code=200,dependencies=[Depends(JWTBearer)])
 def find_all_movies():
     return JSONResponse(status_code=200, content=movies)
 
-@app.get("/movies/{id}",tags=["movies"])
+@app.get("/movies/{id}",tags=["movies"],dependencies=[Depends(JWTBearer)])
 def get_movies(id: int = Path(ge=1, le=200)):
      return list(filter(lambda movie : movie["id"] == id, movies))
 
