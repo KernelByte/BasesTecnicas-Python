@@ -14,3 +14,7 @@ class Movie(BaseModel):
                 "category": "Action"
             }
         }
+
+class User(BaseModel):
+    email:str
+    password:str

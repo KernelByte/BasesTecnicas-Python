@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Body, Path, Query
 from fastapi.responses import HTMLResponse, JSONResponse
 import Esquemas
+from jwt_manager import create_token
 
 app = FastAPI()
 app.title = "My movie app"
@@ -86,3 +87,8 @@ def delete_movie(id: int):
           if item["id"] == id:
                movies.remove(item)
      return movies
+
+
+@app.post("/login", tags=["Login"])
+def login(user: Esquemas.User):
+     return user
