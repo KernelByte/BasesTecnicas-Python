@@ -23,7 +23,7 @@ def get_all_movies() -> list[Esquemas.Movie]:
 @movie_router.get("/movies/{id}", tags=["movies"], dependencies=[Depends(JWTBearer)])
 def get_movies(id: int = Path(ge=1, le=200)):
     db = Session()
-    result = db.query(MovieModel).filter(MovieModel.id == id).first()
+    result = MovieService(db).get_movie(id)
     if not result:
         return JSONResponse(status_code=404, content={"message": "Movie no encontrada"})
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
