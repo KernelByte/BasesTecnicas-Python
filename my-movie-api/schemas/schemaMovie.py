@@ -20,7 +20,3 @@ class Movie(BaseModel):
                 "category": "Accion"
             }
         }
-
-class User(BaseModel):
-    email:str
-    password:str

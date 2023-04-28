@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-import Esquemas
+from schemas.schemaMovie import Movie
 from fastapi import  Path, Depends
 from fastapi.responses import  JSONResponse
 from fastapi.encoders import jsonable_encoder
@@ -11,8 +11,8 @@ from services.movieService import MovieService
 movie_router = APIRouter()
 
 # Metodo GET - TODOS LOS REGISTROS
-@movie_router.get("/movies", tags=["movies"], response_model=list[Esquemas.Movie], status_code=200)
-def get_all_movies() -> list[Esquemas.Movie]:
+@movie_router.get("/movies", tags=["movies"], response_model=list[Movie], status_code=200)
+def get_all_movies() -> list[Movie]:
     db = Session()
     result = MovieService(db).get_movies()
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
@@ -32,18 +32,16 @@ def get_movies(id: int = Path(ge=1, le=200)):
 
 # Metodo POST
 @movie_router.post("/movies", tags=["movies"], status_code=201)
-def create_movie(movie: Esquemas.Movie) -> dict:
+def create_movie(movie: Movie) -> dict:
     db = Session()
-    new_movie = MovieModel(**movie.dict())
-    db.add(new_movie)
-    db.commit()
+    MovieService(db).create_movie(movie)
     return JSONResponse(status_code=201, content={"message": "Se ha registrado la pelicula de manera correcta"})
 
 
 
 # Metodo PUT
 @movie_router.put("/movies/{id}", tags=["movies"])
-def update_movies(id: int, movie: Esquemas.Movie) -> dict:
+def update_movies(id: int, movie: Movie) -> dict:
     db = Session()
     result = db.query(MovieModel).filter(MovieModel.id == id).first()
     if not result:
