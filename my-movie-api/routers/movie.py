@@ -3,10 +3,10 @@ import Esquemas
 from fastapi import  Path, Depends
 from fastapi.responses import  JSONResponse
 from fastapi.encoders import jsonable_encoder
-from jwt_manager import create_token
 from config.database import Session
 from models.movie import Movie as MovieModel
 from middlewares.jwt_bearer import JWTBearer
+from services.movieService import MovieService
 
 movie_router = APIRouter()
 
@@ -14,7 +14,7 @@ movie_router = APIRouter()
 @movie_router.get("/movies", tags=["movies"], response_model=list[Esquemas.Movie], status_code=200)
 def get_all_movies() -> list[Esquemas.Movie]:
     db = Session()
-    result = db.query(MovieModel).all()
+    result = MovieService(db).get_movies()
     return JSONResponse(status_code=200, content=jsonable_encoder(result))
 
 
@@ -69,15 +69,3 @@ def delete_movie(id: int) -> dict:
        db.delete(result)
        db.commit()
        return JSONResponse(content={"message": "Se a eliminado la pelicula"})
-
-
-
-# EndPoint de LOGIN
-@movie_router.post("/login", tags=["Login"])
-def login(user: Esquemas.User):
-
-    if user.email == "admin@gmail.com" and user.password == "12345":
-        token: str = create_token(user.dict())
-    return JSONResponse(status_code=200, content=token)
-
-    return user
