@@ -43,15 +43,10 @@ def create_movie(movie: Movie) -> dict:
 @movie_router.put("/movies/{id}", tags=["movies"])
 def update_movies(id: int, movie: Movie) -> dict:
     db = Session()
-    result = db.query(MovieModel).filter(MovieModel.id == id).first()
+    result = MovieService(db).get_movie(id)
     if not result:
         return JSONResponse(status_code=404, content={"message": "Movie no encontrada"})
-    result.title = movie.title
-    result.overview = movie.overview
-    result.year =  movie.year
-    result.rating = movie.rating
-    result.category = movie.category
-    db.commit()
+    MovieService(db).update_movie(id, movie)
     return JSONResponse(content={"message": "Se a modificado la pelicula"})
 
 
