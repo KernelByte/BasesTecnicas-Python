@@ -10,7 +10,7 @@ from services.movieService import MovieService
 
 movie_router = APIRouter()
 
-# Metodo GET - TODOS LOS REGISTROS
+# Metodo GET - TODOS LOS REGISTROS|
 @movie_router.get("/movies", tags=["movies"], response_model=list[Movie], status_code=200)
 def get_all_movies() -> list[Movie]:
     db = Session()
