@@ -1,27 +1,21 @@
-from fastapi import FastAPI, Body, Path, Query, Request, HTTPException, Depends
+from fastapi import FastAPI, Path, Depends
 from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi.security import HTTPBearer
 from fastapi.encoders import jsonable_encoder
 import Esquemas
-from jwt_manager import create_token, validate_token
+from jwt_manager import create_token
 from config.database import Session, engine, Base
 from models.movie import Movie as MovieModel
+from middlewares.error_handler import ErrorHandler
+from middlewares.jwt_bearer import JWTBearer
 
 app = FastAPI()
 app.title = "My movie app"
 app.version = 1.0
+app.add_middleware(ErrorHandler)
+app.add_middleware(JWTBearer)
 
 # Creacion y conexion base de datos
 Base.metadata.create_all(bind=engine)
-
-
-class JWTBearer(HTTPBearer):
-    async def __call__(self, request: Request):
-        respuesta = await super().__call__(request)
-        data = validate_token(respuesta.credentials)
-        if data["email"] != "admin@gmail.com":
-            raise HTTPException(
-                status_code=403, detail="Las credenciales son invalidas")
 
 
 @app.get("/", tags=["Home url"], response_class=HTMLResponse)
