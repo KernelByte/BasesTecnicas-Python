@@ -7,5 +7,4 @@ class JWTBearer(HTTPBearer):
         respuesta = await super().__call__(request)
         data = validate_token(respuesta.credentials)
         if data["email"] != "admin@gmail.com":
-            raise HTTPException(
-                status_code=403, detail="Las credenciales son invalidas")
+            raise HTTPException(status_code=403, detail="Las credenciales son invalidas")
